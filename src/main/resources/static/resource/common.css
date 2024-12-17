@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+/* 전체 화면을 flexbox로 설정 */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;  /* 수평 중앙 정렬 */
+    align-items: center;      /* 수직 중앙 정렬 */
+}
+
+/* 페이지의 메인 컨텐츠 부분 */
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px; /* 원하는 최대 너비 설정 */
+    height: 100%; /* 전체 높이 사용 */
+}
+
+/* 사이드바가 있는 경우 그 너비를 정해두고, 그 외 콘텐츠는 가변적으로 처리 */
+#content {
+    flex-grow: 1; /* 콘텐츠 영역이 남는 공간을 차지하도록 설정 */
+    width: 100%;
+}

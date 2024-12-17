@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: demo
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/BUS?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password:
+    
+server:
+  port: 8080
+
+bus:
+  api:
+    key: EfInCPvp1KaSRfM%2BCL%2FNaAOmlo%2FM%2BhjKoLRHOcQ8%2FoqhkalDqtHzKQ8KB1cdtWuNP3xVFG56nJ6WGUSpdQoWRQ%3D%3D
