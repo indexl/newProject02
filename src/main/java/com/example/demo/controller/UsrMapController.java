@@ -11,10 +11,10 @@ public class UsrMapController {
 	        return "usr/api/map1";
 	 }
 	 
-	// @GetMapping("/usr/api/map2")
-//	    public String showMap2() {
-//	        return "usr/api/map2";
-//	 } 
+	 @GetMapping("/usr/api/map2")
+	    public String showMap2() {
+	        return "usr/api/map2";
+	 } 
 	 
 	 @GetMapping("/usr/api/map3")
 	    public String showMap3() {

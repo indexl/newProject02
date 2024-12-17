@@ -1,141 +1,62 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 
 <%@ include file="/WEB-INF/jsp/common/sidebar.jsp"%>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>가장 가까운 버스정류장 찾기</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>실시간 위치 공유</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <style>
-        .map-container {
-            position: relative;
-            width: calc(100% - 200px);
-            height: 100vh;
-            margin-left: 200px;
-        }
-        
-        #result {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            z-index: 2;
-        }
+        #map { width: 100%; height: 500px; }
+        #qrcode { text-align: center; margin: 20px; }
     </style>
 </head>
 <body>
-    <div class="map-container">
-        <div id="map" style="width:70%;height:70%;"></div>
-        <div id="result"></div>
-    </div>
-    
-    <div class="map-container">
-	    <div id="map" style="width:100%;height:100%;"></div>
-	    <div id="result" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2;"></div>
-	</div>
-
+    <div id="map"></div>
+    <div id="qrcode"></div>
     <script>
-        var map;
-        var marker;
-        
-        $(document).ready(function() {
-            initMap();
-            getCurrentLocation();
-        });
-        
-        function initMap() {
-            var defaultPosition = new kakao.maps.LatLng(36.35103339, 127.3797282);
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
-                center: defaultPosition,
+        // WebSocket 연결
+        const socket = new WebSocket('ws://여기에_서버주소_입력/location');
+        let map, marker;
+
+        // 모바일용 위치 공유 페이지 URL
+        const mobilePageUrl = "http://여기에_서버주소_입력/mobile-location.jsp";
+
+        // 지도 초기화
+        const initMap = () => {
+            const options = {
+                center: new kakao.maps.LatLng(37.5665, 126.9780),
                 level: 3
             };
+            map = new kakao.maps.Map(document.getElementById('map'), options);
+        };
+
+        // WebSocket 이벤트 처리
+        socket.onmessage = (event) => {
+            const location = JSON.parse(event.data);
+            updateMarker(location.lat, location.lng);
+        };
+
+        // 마커 업데이트
+        const updateMarker = (lat, lng) => {
+            const position = new kakao.maps.LatLng(lat, lng);
             
-            map = new kakao.maps.Map(mapContainer, mapOption);
-        }
-        
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-                    
-                    // 현재 위치에 마커 표시
-                    var currentPos = new kakao.maps.LatLng(lat, lng);
-                    map.setCenter(currentPos);
-                    
-                    if (marker) {
-                        marker.setMap(null);
-                    }
-                    
-                    marker = new kakao.maps.Marker({
-                        position: currentPos,
-                        map: map
-                    });
-                    
-                    // 가장 가까운 정류장 찾기
-                    findNearestBusStop(lat, lng);
-                    
-                }, function() {
-                    alert('위치 정보를 가져올 수 없습니다.');
+            if (!marker) {
+                marker = new kakao.maps.Marker({
+                    position: position,
+                    map: map
                 });
             } else {
-                alert('이 브라우저에서는 위치 정보를 지원하지 않습니다.');
+                marker.setPosition(position);
             }
-        }
-        
-        function findNearestBusStop(lat, lng) {
-            $.ajax({
-                url: 'usr/api/map2/nearest',
-                type: 'GET',
-                data: {
-                    lat: lat,
-                    lng: lng
-                },
-                success: function(response) {
-                    displayResult(response);
-                    markBusStop(response.latitude, response.longitude);
-                },
-                error: function(error) {
-                    alert('가까운 버스정류장을 찾는데 실패했습니다.');
-                }
-            });
-        }
-        
-        function displayResult(response) {
-            $('#result').html(`
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                    <h3>가장 가까운 버스정류장</h3>
-                    <p>정류장명: ${response.stationName}</p>
-                    <p>정류장 ID: ${response.stationId}</p>
-                    <p>위도: ${response.latitude}</p>
-                    <p>경도: ${response.longitude}</p>
-                </div>
-            `);
-            $('#result').show();  // 결과를 보여줌
-        }
-        
-        function markBusStop(lat, lng) {
-            var busStopPosition = new kakao.maps.LatLng(lat, lng);
             
-            var busStopMarker = new kakao.maps.Marker({
-                position: busStopPosition,
-                map: map,
-                image: new kakao.maps.MarkerImage(
-                    'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-                    new kakao.maps.Size(24, 35)
-                )
-            });
-        }
+            map.setCenter(position);
+        };
+
+        window.onload = initMap;
     </script>
 </body>
 </html>
