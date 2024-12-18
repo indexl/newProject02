@@ -21,7 +21,7 @@
          
         #map {
             width: calc(100% - 250px); /* 사이드바를 제외한 나머지 너비 */
-            height: calc(70vh - 70px); /* 화면 전체 높이에서 여백을 제외 */
+            height: calc(60vh - 60px); /* 화면 전체 높이에서 여백을 제외 */
             margin-left: 250px; /* 사이드바 너비만큼 밀어줌 */
         }
 
