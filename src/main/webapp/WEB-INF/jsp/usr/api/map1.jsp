@@ -24,8 +24,6 @@
             height: calc(60vh - 60px); /* 화면 전체 높이에서 여백을 제외 */
             margin-left: 250px; /* 사이드바 너비만큼 밀어줌 */
         }
-
-     
         #clickLatlng {
             text-align: center;
             margin-top: 10px;

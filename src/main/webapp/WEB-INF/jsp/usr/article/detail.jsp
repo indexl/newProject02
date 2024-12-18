@@ -89,16 +89,19 @@
                 </table>
 
                 <!-- 버튼 영역 -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <button class="btn btn-secondary" onclick="history.back();">뒤로가기</button>
-                    <c:if test="${rq.getLoginedMemberId() == article.getMemberId()}">
-                        <div>
-                            <a class="btn btn-primary me-2" href="modify?id=${article.getId()}">수정</a>
-                            <a class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');" 
-                               href="doDelete?id=${article.getId()}">삭제</a>
-                        </div>
-                    </c:if>
-                </div>
+              <!-- 버튼 영역 -->
+					<div class="d-flex justify-content-between align-items-center mb-4">
+					    <button class="btn btn-secondary" onclick="history.back();">뒤로가기</button>
+					    <c:if test="${rq.getLoginedMemberId() == article.getMemberId()}">
+					        <div>
+					            <a class="btn btn-primary me-2" href="modify?id=${article.getId()}">수정</a>
+					            <a class="btn btn-danger me-2" 
+					               onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;" 
+					               href="doDelete?id=${article.getId()}&boardId=${article.getBoardId()}">삭제</a>
+					        </div>
+					    </c:if>
+					</div>
+
 
                 <!-- 댓글 섹션 -->
                 <div class="comment-section">

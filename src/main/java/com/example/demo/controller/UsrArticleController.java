@@ -136,7 +136,7 @@ public class UsrArticleController {
 
 	@GetMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(int id, @RequestParam(required = false) Integer boardId) {
+	public String doDelete(int id, int boardId) {
 
 		articleService.deleteArticle(id);
 
