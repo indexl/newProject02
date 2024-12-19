@@ -104,7 +104,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>캡쳐모드</span>
@@ -112,13 +112,8 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">1</h6>
-                        <a class="collapse-item" href="login.html">아</a>
-                        <a class="collapse-item" href="register.html">직</a>
-                        <a class="collapse-item" href="forgot-password.html">미</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">2</h6>
-                        <a class="collapse-item" href="404.html">구</a>
-                        <a class="collapse-item" href="blank.html">현</a>
+                        <a class="collapse-item" href="">아</a>
+                        <a class="collapse-item" href="">직</a>              
                     </div>
                 </div>
             </li>
@@ -133,13 +128,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map2">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>map2</span></a>
+                    <span>주소 뷰</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map3">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>map3</span></a>
+                    <span>QR코드 위치확인</span></a>
             </li>
 
             <li class="nav-item">
@@ -155,9 +150,9 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="/usr/api/map6">
+                <a class="nav-link" href="/usr/api/capture">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>map6</span></a>
+                    <span>캡쳐모드</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -221,7 +216,5 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
-
 </body>
-
 </html>

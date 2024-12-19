@@ -2,61 +2,90 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 
 <%@ include file="/WEB-INF/jsp/common/sidebar.jsp"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>실시간 위치 공유</title>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
-    <style>
-        #map { width: 100%; height: 500px; }
-        #qrcode { text-align: center; margin: 20px; }
-    </style>
+    <meta charset="utf-8">
+    <title>주소로 장소 및 로드뷰 표시하기</title>
 </head>
 <body>
-    <div id="map"></div>
-    <div id="qrcode"></div>
-    <script>
-        // WebSocket 연결
-        const socket = new WebSocket('ws://여기에_서버주소_입력/location');
-        let map, marker;
 
-        // 모바일용 위치 공유 페이지 URL
-        const mobilePageUrl = "http://여기에_서버주소_입력/mobile-location.jsp";
+<!-- 지도 표시 영역 -->
+<div id="map" style="width:100%;height:400px;"></div>
 
-        // 지도 초기화
-        const initMap = () => {
-            const options = {
-                center: new kakao.maps.LatLng(37.5665, 126.9780),
-                level: 3
-            };
-            map = new kakao.maps.Map(document.getElementById('map'), options);
-        };
+<!-- 텍스트 박스와 버튼을 하단에 배치 -->
+<div style="text-align: center; margin-top: 20px;">
+    <input type="text" id="address" placeholder="목적지를 입력하세요" onkeypress="checkEnter(event)" />
+    <button onclick="searchAddress()">목적지 검색</button>
+</div>
 
-        // WebSocket 이벤트 처리
-        socket.onmessage = (event) => {
-            const location = JSON.parse(event.data);
-            updateMarker(location.lat, location.lng);
-        };
+<!-- 로드뷰 표시 영역 -->
+<div id="roadview" style="width:100%;height:400px; margin-top: 20px;"></div>
 
-        // 마커 업데이트
-        const updateMarker = (lat, lng) => {
-            const position = new kakao.maps.LatLng(lat, lng);
-            
-            if (!marker) {
-                marker = new kakao.maps.Marker({
-                    position: position,
-                    map: map
-                });
-            } else {
-                marker.setPosition(position);
-            }
-            
-            map.setCenter(position);
-        };
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c&libraries=services"></script>
+<script>
 
-        window.onload = initMap;
-    </script>
+var mapContainer = document.getElementById('map'),
+    mapOption = {
+        center: new kakao.maps.LatLng(36.35123316214455, 127.38050183390544),
+        level: 2
+    };  
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+var geocoder = new kakao.maps.services.Geocoder();
+
+
+var roadviewContainer = document.getElementById('roadview');
+var roadview = new kakao.maps.Roadview(roadviewContainer);
+var roadviewClient = new kakao.maps.RoadviewClient();
+
+var defaultPosition = new kakao.maps.LatLng(36.35120839795718, 127.38049614316073);
+initializeMapAndRoadview(defaultPosition);
+
+function initializeMapAndRoadview(position) {
+   
+    map.setCenter(position);
+
+  
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: position
+    });
+
+    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+        if (panoId) {
+            roadview.setPanoId(panoId, position);
+        } else {
+            alert("로드뷰를 찾을 수 없습니다.");
+        }
+    });
+}
+
+function searchAddress() {
+    var address = document.getElementById('address').value;
+
+    if (!address) {
+        alert("주소를 입력해주세요.");
+        return;
+    }
+
+    geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+           
+            initializeMapAndRoadview(coords);
+        } else {
+            alert("주소를 찾을 수 없습니다.");
+        }
+    });
+}
+
+function checkEnter(event) {
+    if (event.keyCode === 13) { 
+        searchAddress();
+    }
+}
+</script>
 </body>
 </html>
