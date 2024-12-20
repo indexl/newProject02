@@ -56,7 +56,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">버스정류장 <sup> 시스템</sup></div>
+                <div class="sidebar-brand-text mx-3">정류장 <sup> 시스템</sup></div>
             </a>
 
             <!-- Divider -->
@@ -66,7 +66,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>버스정류장 시스템이란?</span></a>
+                    <span>정류장 시스템이란?</span></a>
             </li>
 
             <!-- Divider -->
@@ -102,21 +102,7 @@
                 승차장 시스템
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>캡쳐모드</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">1</h6>
-                        <a class="collapse-item" href="">아</a>
-                        <a class="collapse-item" href="">직</a>              
-                    </div>
-                </div>
-            </li>
+       
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
@@ -140,13 +126,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map4">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>map4</span></a>
+                    <span>대전버스</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map5">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>map5</span></a>
+                    <span>메세지 전송</span></a>
             </li>
             
             <li class="nav-item">

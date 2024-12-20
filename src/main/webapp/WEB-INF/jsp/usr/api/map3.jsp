@@ -92,15 +92,15 @@
         };
 
         // 고유한 공유 ID 생성
-     	// 고유한 공유 ID 생성 및 표시 부분 수정
-		const urlParams = new URLSearchParams(window.location.search);
-		let shareId = urlParams.get('id');
-		
-		// ID가 없으면 새로 생성
-		if (!shareId) {
-		    shareId = Math.random().toString(36).substring(2, 8);
-		    window.history.replaceState(null, '', `?id=${shareId}`);
-		}
+        // 고유한 공유 ID 생성 및 표시 부분 수정
+      const urlParams = new URLSearchParams(window.location.search);
+      let shareId = urlParams.get('id');
+      
+      // ID가 없으면 새로 생성
+      if (!shareId) {
+          shareId = Math.random().toString(36).substring(2, 8);
+          window.history.replaceState(null, '', `?id=${shareId}`);
+      }
 
         // 모바일 여부 확인
         function isMobile() {
