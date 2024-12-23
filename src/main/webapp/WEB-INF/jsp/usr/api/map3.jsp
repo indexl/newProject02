@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 
 <%@ include file="/WEB-INF/jsp/common/sidebar.jsp"%>
@@ -6,12 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>실시간 위치 공유</title>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실시간 위치 공유</title>
+
+<!-- Firebase SDK -->
+<script type="module">
         // Firebase App 가져오기
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
         import { getDatabase, ref, set, onValue, remove } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js';
@@ -35,64 +36,69 @@
         window.dbOnValue = onValue;
         window.dbRemove = remove;
     </script>
-    
-    <!-- 카카오맵 -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c"></script>
-    <!-- QR코드 -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <style>
-        body { 
-            margin: 0; 
-            padding: 20px; 
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
-            min-height: 100vh;
-        }
 
-        #map { 
-            width: 100%;
-            height: 500px;
-            max-width: 1200px;
-            margin: 20px auto;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+<!-- 카카오맵 -->
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c"></script>
+<!-- QR코드 -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+body {
+	margin: 0;
+	padding: 20px;
+	font-family: Arial, sans-serif;
+	background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
+	min-height: 100vh;
+}
 
-        .status {
-            text-align: center;
-            padding: 10px;
-            margin: 10px auto;
-            max-width: 800px;
-            border-radius: 4px;
-            color: #333;
-        }
-        
-        #qrcode {
-            text-align: center;
-            margin: 20px auto;
-            max-width: 200px;
-            padding: 15px;
-        }
+#map {
+	width: 100%;
+	height: 500px;
+	max-width: 1200px;
+	margin: 20px auto;
+	border-radius: 8px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        @media (max-width: 768px) {
-            .desktop-only { display: none; }
-        }
-        @media (min-width: 769px) {
-            .mobile-only { display: none; }
-        }
-    </style>
+.status {
+	text-align: center;
+	padding: 10px;
+	margin: 10px auto;
+	max-width: 800px;
+	border-radius: 4px;
+	color: #333;
+}
+
+#qrcode {
+	text-align: center;
+	margin: 20px auto;
+	max-width: 200px;
+	padding: 15px;
+}
+
+@media ( max-width : 768px) {
+	.desktop-only {
+		display: none;
+	}
+}
+
+@media ( min-width : 769px) {
+	.mobile-only {
+		display: none;
+	}
+}
+</style>
 </head>
 <body>
-    <div id="status" class="status">연결 중...</div>
-    
-    <!-- PC에서만 보이는 QR코드 -->
-     <div id="qrcode" class="desktop-only">
-     </div>
+	<div id="status" class="status">연결 중...</div>
 
-    <div id="map"></div>
+	<!-- PC에서만 보이는 QR코드 -->
+	<div id="qrcode" class="desktop-only"></div>
 
-    <script>
+	<div id="map"></div>
+
+	<script>
         // 초기 위치 설정 (서울시청)
         const initialLocation = {
             latitude: 36.3321828283193,
