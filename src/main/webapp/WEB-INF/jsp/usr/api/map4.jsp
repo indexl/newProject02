@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
-
 <%@ include file="/WEB-INF/jsp/common/sidebar.jsp"%>
-
 <%@ page import="javax.xml.parsers.*" %>
 <%@ page import="org.w3c.dom.*" %>
 <%@ page import="java.net.*" %>
@@ -15,15 +13,14 @@
     <meta charset="UTF-8">
     <title>버스정류장 정보</title>
  
-         <style>
-          body {
-              font-family: 'Noto Sans KR', sans-serif;
-              max-width: 800px;
-              margin: 0 auto;
-              padding: 20px;
-              background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
-          }
-          ...
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
+        }
         
         .container {
             background-color: white;
@@ -101,67 +98,27 @@
         }
         
         .button-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin: 20px 0;
-      }
-      
-      .map-button {
-          background-color: #007bff;  /* 파란색 */
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-      }
-      
-      .map-button:hover {
-          background-color: #0056b3;
-      }
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>버스정류장 정보</h1>
-        
         <div id="lastUpdateTime"></div>
-         
-		         <div class="button-container" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
-		    <button class="button" onclick="loadBusStopInfo()">정보 새로고침</button>
-		    
-		    <div style="text-align: center;">
-		        <input type="text" id="busStopIdInput" 
-		            placeholder="정류장ID 입력" 
-		            style="padding: 8px;
-		                   border-radius: 4px;
-		                   border: 1px solid #ccc;
-		                   width: 120px;
-		                   margin-bottom: 2px;"
-		            onkeypress="if(event.keyCode==13) updateBusStopId()">
-		        <div style="color: #888; font-size: 12px;">
-		            8001193 궁동<br>
-		            8001195 대덕구청<br>
-		            8001378 대전광역시청
-		            
-		        </div>
-		    </div>
-		    
-		    <button class="button" style="background-color: #007bff;" onclick="location.href='/usr/api/map5'">거리뷰 확인</button>
-		</div>
-         
- 
+
         <div id="busStopInfo">
-           <%
-			    String serviceKey = "EfInCPvp1KaSRfM%2BCL%2FNaAOmlo%2FM%2BhjKoLRHOcQ8%2FoqhkalDqtHzKQ8KB1cdtWuNP3xVFG56nJ6WGUSpdQoWRQ%3D%3D";
-			    String busStopId = request.getParameter("busStopId");
-			    if(busStopId == null || busStopId.isEmpty()) {
-			        busStopId = "8001195"; // 기본값
-			    }
-			                
+            <%
+                String serviceKey = "EfInCPvp1KaSRfM%2BCL%2FNaAOmlo%2FM%2BhjKoLRHOcQ8%2FoqhkalDqtHzKQ8KB1cdtWuNP3xVFG56nJ6WGUSpdQoWRQ%3D%3D";
+                String busStopId = request.getParameter("busStopId");
+                if(busStopId == null || busStopId.isEmpty()) {
+                    busStopId = "8002721"; // 기본값
+                }
+                
                 try {
-                    // 정류장 정보 파싱
                     String urlStr = "http://openapitraffic.daejeon.go.kr/api/rest/stationinfo/getStationByStopID" +
                                   "?serviceKey=" + serviceKey +
                                   "&BusStopID=" + busStopId;
@@ -178,14 +135,41 @@
                         Node item = itemList.item(0);
                         if (item.getNodeType() == Node.ELEMENT_NODE) {
                             Element element = (Element) item;
+                            String latitude = getNodeValue(element, "GPS_LATI");
+                            String longitude = getNodeValue(element, "GPS_LONG");
                             %>
+                            <div class="button-container" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                                <button class="button" onclick="loadBusStopInfo()">정보 새로고침</button>
+                                
+                                <div style="text-align: center;">
+                                    <input type="text" id="busStopIdInput" 
+                                        placeholder="정류장ID 입력" 
+                                        style="padding: 8px;
+                                               border-radius: 4px;
+                                               border: 1px solid #ccc;
+                                               width: 120px;
+                                               margin-bottom: 2px;"
+                                        onkeypress="if(event.keyCode==13) updateBusStopId()">
+                                    <div style="color: #888; font-size: 12px;">
+                                        8002721 충남대학교<br>
+                                        8001378 대전광역시청<br>
+                                        8001195 대덕구청
+                                    </div>
+                                </div>
+                                
+                                <button class="button" style="background-color: #007bff;" 
+                                        onclick="location.href='/usr/api/map5?lat=<%= latitude %>&lng=<%= longitude %>'">
+                                    거리뷰 확인
+                                </button>
+                            </div>
+
                             <div class="info-box">
                                 <p><span class="info-label">정류장 이름:</span> <%= getNodeValue(element, "BUSSTOP_NM") %></p>
                                 <p><span class="info-label">영문 이름:</span> <%= getNodeValue(element, "BUSSTOP_ENG_NM") %></p>
                                 <p><span class="info-label">도로명:</span> <%= getNodeValue(element, "ROAD_NM") %></p>
                                 <p><span class="info-label">GPS 좌표:</span> 
-                                   위도 <%= getNodeValue(element, "GPS_LATI") %>, 
-                                   경도 <%= getNodeValue(element, "GPS_LONG") %>
+                                   위도 <%= latitude %>, 
+                                   경도 <%= longitude %>
                                 </p>
                                 <p><span class="info-label">버스 노선:</span></p>
                                 <div class="route-list">
@@ -206,7 +190,6 @@
                         }
                     }
 
-                    // 도착 정보 파싱 및 정렬
                     String arrivalUrlStr = "http://openapitraffic.daejeon.go.kr/api/rest/arrive/getArrInfoByStopID" +
                                          "?serviceKey=" + serviceKey +
                                          "&BusStopID=" + busStopId;
@@ -221,7 +204,6 @@
                         <h2>버스 도착 예정 정보</h2>
                     <%
                     if (arrivalList.getLength() > 0) {
-                        // 도착 정보를 저장할 리스트
                         List<Element> sortedArrivals = new ArrayList<>();
                         for (int i = 0; i < arrivalList.getLength(); i++) {
                             Node arrivalItem = arrivalList.item(i);
@@ -230,14 +212,13 @@
                             }
                         }
 
-                        // 도착 예정 시간으로 정렬
                         Collections.sort(sortedArrivals, (a, b) -> {
-                      int timeA = Integer.parseInt(getNodeValue(a, "EXTIME_MIN")) * 60 
-                              + Integer.parseInt(getNodeValue(a, "EXTIME_SEC"));  // /60 제거
-                      int timeB = Integer.parseInt(getNodeValue(b, "EXTIME_MIN")) * 60 
-                              + Integer.parseInt(getNodeValue(b, "EXTIME_SEC"));  // /60 제거
-                      return timeA - timeB;
-                  });
+                            int timeA = Integer.parseInt(getNodeValue(a, "EXTIME_MIN")) * 60 
+                                    + Integer.parseInt(getNodeValue(a, "EXTIME_SEC"));
+                            int timeB = Integer.parseInt(getNodeValue(b, "EXTIME_MIN")) * 60 
+                                    + Integer.parseInt(getNodeValue(b, "EXTIME_SEC"));
+                            return timeA - timeB;
+                        });
 
                         for (Element arrivalElement : sortedArrivals) {
                             int seconds = Integer.parseInt(getNodeValue(arrivalElement, "EXTIME_SEC"));
@@ -307,11 +288,10 @@
                     updateLastUpdateTime();
                 });
         }
-        
+
         function updateBusStopId() {
             const newBusStopId = document.getElementById('busStopIdInput').value;
             if(newBusStopId && newBusStopId.length === 7) {
-                // URL의 쿼리 파라미터 업데이트
                 const currentUrl = new URL(window.location.href);
                 currentUrl.searchParams.set('busStopId', newBusStopId);
                 window.location.href = currentUrl.toString();
@@ -320,10 +300,7 @@
             }
         }
 
-        // 페이지 로드 시 초기 시간 표시
         updateLastUpdateTime();
-
-        // 1분마다 자동 새로고침
         setInterval(loadBusStopInfo, 30000);
     </script>
 </body>

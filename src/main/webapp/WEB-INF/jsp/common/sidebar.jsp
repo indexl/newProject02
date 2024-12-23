@@ -124,19 +124,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map4">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>대전버스정류장</span></a>
+                    <span>정류장 정보</span></a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/usr/api/map5">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>정류장 뷰</span></a>
-            </li>
-            
+        
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/capture">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>캡쳐모드</span></a>
+                    <span>캡쳐 모드</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
