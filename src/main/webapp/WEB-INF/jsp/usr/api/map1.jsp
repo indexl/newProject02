@@ -8,7 +8,16 @@
 <head>
     <meta charset="utf-8">
     <title>검색 후 마커 표시하기</title>
-    <style>
+    
+    <style>    
+	     body { 
+	            margin: 0; 
+	            padding: 20px; 
+	            font-family: Arial, sans-serif;
+	            background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
+	            min-height: 100vh;
+	        }
+	    	
        
         #search-container {
             display: flex;

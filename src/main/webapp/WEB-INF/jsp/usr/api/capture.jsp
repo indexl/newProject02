@@ -11,6 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
+	
         #shot {
             position: fixed;
             bottom: 20px;

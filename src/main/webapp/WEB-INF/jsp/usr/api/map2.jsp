@@ -11,6 +11,16 @@
 </head>
 <body>
 
+   <style>
+	     body { 
+	            margin: 0; 
+	            padding: 20px; 
+	            font-family: Arial, sans-serif;
+	            background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
+	            min-height: 100vh;
+	        }
+	</style>  
+
 <!-- 지도 표시 영역 -->
 <div id="map" style="width:100%;height:400px;"></div>
 
@@ -39,7 +49,9 @@ var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
-var defaultPosition = new kakao.maps.LatLng(36.35120839795718, 127.38049614316073);
+//위도 36.34627, 경도 127.37883
+
+var defaultPosition = new kakao.maps.LatLng(36.34627, 127.37883);
 initializeMapAndRoadview(defaultPosition);
 
 function initializeMapAndRoadview(position) {

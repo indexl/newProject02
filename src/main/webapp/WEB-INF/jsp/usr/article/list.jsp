@@ -5,6 +5,16 @@
 
 <c:set var="pageTitle" value="${board.getName()} 게시판" />
 
+<style>
+ body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
+            min-height: 100vh;
+        }
+</style>
+
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-8">

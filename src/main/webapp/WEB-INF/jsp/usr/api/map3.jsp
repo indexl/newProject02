@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>실시간 위치 공유</title>
+    
     <!-- Firebase SDK -->
     <script type="module">
         // Firebase App 가져오기
@@ -35,37 +36,45 @@
         window.dbRemove = remove;
     </script>
     
-    <!-- 네이버 지도 -->
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ukkuio3cf4"></script>
+    <!-- 카카오맵 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c"></script>
     <!-- QR코드 -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
         body { 
             margin: 0; 
             padding: 20px; 
-            font-family: Arial, sans-serif; 
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #F0FFFF 0%, #8FE5D0 100%);
+            min-height: 100vh;
         }
+
         #map { 
             width: 100%;
-            height: 400px;
-            max-width: 800px;
+            height: 500px;
+            max-width: 1200px;
             margin: 20px auto;
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .status {
             text-align: center;
             padding: 10px;
             margin: 10px auto;
             max-width: 800px;
             border-radius: 4px;
-            background-color: #f8f9fa;
+            color: #333;
         }
+        
         #qrcode {
             text-align: center;
             margin: 20px auto;
             max-width: 200px;
+            padding: 15px;
         }
+
         @media (max-width: 768px) {
             .desktop-only { display: none; }
         }
@@ -78,29 +87,27 @@
     <div id="status" class="status">연결 중...</div>
     
     <!-- PC에서만 보이는 QR코드 -->
-    <div id="qrcode" class="desktop-only">
-        <p>휴대폰으로 스캔하세요</p>
-    </div>
+     <div id="qrcode" class="desktop-only">
+     </div>
 
     <div id="map"></div>
 
     <script>
         // 초기 위치 설정 (서울시청)
         const initialLocation = {
-            latitude: 37.5666805,
-            longitude: 126.9784147
+            latitude: 36.3321828283193,
+            longitude: 127.434156287265
         };
 
         // 고유한 공유 ID 생성
-        // 고유한 공유 ID 생성 및 표시 부분 수정
-      const urlParams = new URLSearchParams(window.location.search);
-      let shareId = urlParams.get('id');
-      
-      // ID가 없으면 새로 생성
-      if (!shareId) {
-          shareId = Math.random().toString(36).substring(2, 8);
-          window.history.replaceState(null, '', `?id=${shareId}`);
-      }
+        const urlParams = new URLSearchParams(window.location.search);
+        let shareId = urlParams.get('id');
+        
+        // ID가 없으면 새로 생성
+        if (!shareId) {
+            shareId = Math.random().toString(36).substring(2, 8);
+            window.history.replaceState(null, '', `?id=${shareId}`);
+        }
 
         // 모바일 여부 확인
         function isMobile() {
@@ -141,19 +148,19 @@
 
         // 위치 표시 함수
         function displayLocation(lat, lng) {
-            const location = new naver.maps.LatLng(lat, lng);
+            const latlng = new kakao.maps.LatLng(lat, lng);
 
             if (marker) {
-                marker.setPosition(location);
+                marker.setPosition(latlng);
             } else {
-                marker = new naver.maps.Marker({
-                    position: location,
+                marker = new kakao.maps.Marker({
+                    position: latlng,
                     map: map
                 });
             }
 
-            map.setCenter(location);
-            document.getElementById('status').textContent = '위치앱을 켠 상태로';
+            map.setCenter(latlng);
+            document.getElementById('status').textContent = '휴대폰으로 위치앱을 켠 상태로 스캔하세요';
         }
 
         // 초기화 함수
@@ -162,11 +169,17 @@
             resetLocation();
 
             // 지도 초기화 (초기 위치로)
-            map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(initialLocation.latitude, initialLocation.longitude),
-                zoom: 17,
-                zoomControl: true
-            });
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(initialLocation.latitude, initialLocation.longitude),
+                level: 3
+            };
+
+            map = new kakao.maps.Map(mapContainer, mapOption);
+            
+            // 지도 컨트롤 추가
+            const zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
             // 위치 정보 수신 및 오류 처리 (모바일에서만)
             if (isMobile() && "geolocation" in navigator) {
@@ -189,6 +202,38 @@
                     // 데이터가 없으면 초기 위치 표시
                     displayLocation(initialLocation.latitude, initialLocation.longitude);
                 }
+            });
+
+            // 카카오맵 카테고리 (버스정류장) 표시
+            const ps = new kakao.maps.services.Places(map);
+            
+            // 지도 이동 완료 이벤트 등록
+            kakao.maps.event.addListener(map, 'idle', function() {
+                ps.categorySearch('BU8', function(data, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        for (let i = 0; i < data.length; i++) {
+                            const marker = new kakao.maps.Marker({
+                                position: new kakao.maps.LatLng(data[i].y, data[i].x),
+                                map: map
+                            });
+
+                            // 인포윈도우 생성
+                            const infowindow = new kakao.maps.InfoWindow({
+                                content: '<div style="padding:5px;font-size:12px;">' + data[i].place_name + '</div>'
+                            });
+
+                            // 마커에 마우스오버 이벤트 등록
+                            kakao.maps.event.addListener(marker, 'mouseover', function() {
+                                infowindow.open(map, marker);
+                            });
+
+                            // 마커에 마우스아웃 이벤트 등록
+                            kakao.maps.event.addListener(marker, 'mouseout', function() {
+                                infowindow.close();
+                            });
+                        }
+                    }
+                });
             });
         }
 
