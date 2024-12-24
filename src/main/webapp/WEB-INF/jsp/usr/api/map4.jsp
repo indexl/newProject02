@@ -147,7 +147,7 @@ body {
 						style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 120px; margin-bottom: 2px;"
 						onkeypress="if(event.keyCode==13) updateBusStopId()">
 					<div style="color: #888; font-size: 12px;">
-						ex) 8002721 충남대학교<br> 8001378 대전광역시청<br> 8001195 대덕구청
+						ex) 8002721 충남대학교<br> 8001378 대전광역시청<br> 8001195 장대네거리
 					</div>
 				</div>
 

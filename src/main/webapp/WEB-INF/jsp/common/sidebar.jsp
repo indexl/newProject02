@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>버스정류장 시스템</title>
+    <title>정류장 시스템</title>
 
     <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -126,13 +126,7 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>정류장 정보</span></a>
             </li>
-        
-            <li class="nav-item">
-                <a class="nav-link" href="/usr/api/capture">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>캡쳐 모드</span></a>
-            </li>
-
+       
             <!-- Nav Item - Tables -->
             <c:if test="${rq.getLoginedMemberId() == -1 }">
                 <!-- If the user is not logged in, show JOIN and LOGIN links -->

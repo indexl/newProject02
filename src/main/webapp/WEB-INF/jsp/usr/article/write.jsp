@@ -81,8 +81,6 @@
         </div>
     </div>
 
-    <%@ include file="/WEB-INF/jsp/common/footer.jsp" %>
-
     <script>
         function writeForm_onSubmit(form) {
             form.title.value = form.title.value.trim();
