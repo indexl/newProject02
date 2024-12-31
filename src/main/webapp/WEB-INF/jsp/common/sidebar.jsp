@@ -75,6 +75,8 @@
                 관련게시판
             </div>
 
+
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -91,10 +93,10 @@
                 </div>
             </li>
 
+
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
-      
+              
             <!-- Heading -->
             <div class="sidebar-heading">
                 승차장 시스템
