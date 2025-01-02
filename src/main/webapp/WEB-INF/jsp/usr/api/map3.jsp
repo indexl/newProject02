@@ -51,14 +51,28 @@ body {
 	min-height: 100vh;
 }
 
+.container {
+    display: flex;
+    gap: 20px;
+    max-width: 1600px;
+    margin: 20px auto 20px 250px;
+    justify-content: center;
+}
+
 #map {
-	width: 100%;
-	height: 500px;
-	max-width: 1200px;
-	margin: 20px auto;
-	border-radius: 8px;
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 48%;
+    height: 500px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#roadview {
+    width: 48%;
+    height: 500px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .status {
@@ -81,6 +95,12 @@ body {
 	.desktop-only {
 		display: none;
 	}
+    .container {
+        flex-direction: column;
+    }
+    #map, #roadview {
+        width: 100%;
+    }
 }
 
 @media ( min-width : 769px) {
@@ -92,17 +112,24 @@ body {
 </head>
 <body>
 	<div id="status" class="status">연결 중...</div>
+	
+	<div id="coordinates" class="status" style="font-family: monospace;">
+		위도: <span id="latitude">--</span>° / 경도: <span id="longitude">--</span>°
+	</div>
 
 	<!-- PC에서만 보이는 QR코드 -->
 	<div id="qrcode" class="desktop-only"></div>
 
-	<div id="map"></div>
+    <div class="container">
+        <div id="map"></div>
+        <div id="roadview"></div>
+    </div>
 
 	<script>
-        // 초기 위치 설정 (서울시청)
+        // 초기 위치 설정 (대전시청)
         const initialLocation = {
-            latitude: 36.3321828283193,
-            longitude: 127.434156287265
+            latitude: 36.3515740181875,
+            longitude: 127.386528844404 
         };
 
         // 고유한 공유 ID 생성
@@ -131,6 +158,8 @@ body {
 
         let map;
         let marker = null;
+        let roadview;
+        let roadviewClient;
 
         // 페이지 로드/새로고침 시 Firebase 데이터 초기화
         function resetLocation() {
@@ -152,6 +181,24 @@ body {
             });
         }
 
+        // 로드뷰 업데이트 함수
+        function updateRoadview(lat, lng) {
+            const position = new kakao.maps.LatLng(lat, lng);
+            
+            roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+                if (panoId) {
+                    roadview.setPanoId(panoId, position);
+                } else {
+                    // 로드뷰가 없는 경우 메시지 표시
+                    document.getElementById('roadview').innerHTML = 
+                        '<div style="padding: 20px; text-align: center;">' +
+                        '<p>이 위치에서는 로드뷰를 이용할 수 없습니다.</p>' +
+                        '<p>주변 도로 위치에서 다시 시도해주세요.</p>' +
+                        '</div>';
+                }
+            });
+        }
+
         // 위치 표시 함수
         function displayLocation(lat, lng) {
             const latlng = new kakao.maps.LatLng(lat, lng);
@@ -167,6 +214,9 @@ body {
 
             map.setCenter(latlng);
             document.getElementById('status').textContent = '휴대폰으로 위치앱을 켠 상태로 스캔하세요';
+            
+            // 로드뷰 업데이트
+            updateRoadview(lat, lng);
         }
 
         // 초기화 함수
@@ -182,6 +232,10 @@ body {
             };
 
             map = new kakao.maps.Map(mapContainer, mapOption);
+            
+            // 로드뷰 초기화
+            roadview = new kakao.maps.Roadview(document.getElementById('roadview'));
+            roadviewClient = new kakao.maps.RoadviewClient();
             
             // 지도 컨트롤 추가
             const zoomControl = new kakao.maps.ZoomControl();
@@ -204,9 +258,10 @@ body {
                 const data = snapshot.val();
                 if (data) {
                     displayLocation(data.latitude, data.longitude);
+                    updateCoordinates(data.latitude, data.longitude);
                 } else {
-                    // 데이터가 없으면 초기 위치 표시
                     displayLocation(initialLocation.latitude, initialLocation.longitude);
+                    updateCoordinates(initialLocation.latitude, initialLocation.longitude);
                 }
             });
 
@@ -241,6 +296,12 @@ body {
                     }
                 });
             });
+        }
+
+        // 위도/경도 업데이트 함수
+        function updateCoordinates(lat, lng) {
+            document.getElementById('latitude').textContent = lat.toFixed(6);
+            document.getElementById('longitude').textContent = lng.toFixed(6);
         }
 
         // beforeunload 이벤트에 리스너 추가 (페이지 나갈 때 초기화)

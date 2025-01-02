@@ -40,8 +40,8 @@ body {
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d39ebf45ab30101c92bd6b1126db076c&libraries=services"></script>
 	<script>
 		var mapContainer = document.getElementById('map'), mapOption = {
-			center : new kakao.maps.LatLng(36.35123316214455,
-					127.38050183390544),
+			center : new kakao.maps.LatLng(36.332183,
+					127.434156),
 			level : 2
 		};
 		var map = new kakao.maps.Map(mapContainer, mapOption);
@@ -53,7 +53,7 @@ body {
 
 		//위도 36.34627, 경도 127.37883
 
-		var defaultPosition = new kakao.maps.LatLng(36.34627, 127.37883);
+		var defaultPosition = new kakao.maps.LatLng(36.332183, 127.434156);
 		initializeMapAndRoadview(defaultPosition);
 
 		function initializeMapAndRoadview(position) {

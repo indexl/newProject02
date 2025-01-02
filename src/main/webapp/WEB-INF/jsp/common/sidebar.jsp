@@ -114,7 +114,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map2">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>주소 뷰(개발용)</span></a>
+                    <span>주소 뷰(개발자 이민재)</span></a>
             </li>
 
             <li class="nav-item">
