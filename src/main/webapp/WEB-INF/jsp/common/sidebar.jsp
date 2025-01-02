@@ -120,13 +120,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map3">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>QR코드 위치확인</span></a>
+                    <span>내 위치 확인</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map4">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>정류장 정보</span></a>
+                    <span>대전시 버스정류장</span></a>
             </li>
        
             <!-- Nav Item - Tables -->
