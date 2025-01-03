@@ -108,25 +108,25 @@
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map1">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>위도,경도search(개발용)</span></a>
+                    <span>좌표 search (이민재)</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map2">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>주소 뷰(개발용)</span></a>
+                    <span>주소 뷰 (이민재)</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map3">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>내 위치 확인</span></a>
+                    <span>내 위치 확인 (이민재)</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map4">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>대전시 버스정류장</span></a>
+                    <span>대전 시내버스 (이민재)</span></a>
             </li>
        
             <!-- Nav Item - Tables -->
