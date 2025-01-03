@@ -100,9 +100,7 @@
             <!-- Heading -->
             <div class="sidebar-heading">
                 승차장 시스템
-            </div>
-
-       
+            </div>         
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
@@ -110,7 +108,7 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>좌표 search (이민재)</span></a>
             </li>
-
+            
             <li class="nav-item">
                 <a class="nav-link" href="/usr/api/map2">
                     <i class="fas fa-fw fa-chart-area"></i>
