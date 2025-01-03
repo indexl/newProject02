@@ -155,11 +155,11 @@
                                     <i class="fas fa-bus fa-2x"></i>
                                 </div>
                                 <h3 class="h5 text-center mb-3">스마트 정류장 뷰</h3>
-                                <p class="text-muted text-center">정류장 사진 및 전송기능</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <p class="text-muted text-center">정류장 사진 및 전송기능</p>                           
+                            </div>               
+                        </div>             
+                    </div>           
+                </div>          
             </div>
         </section>
     </div>

@@ -239,11 +239,10 @@ body {
 					<p>
 						<span class="info-label">예상 도착 시간:</span> <span
 							class="arrival-time"> <%=totalMinutes%>분 <%
- if (remainingSeconds > 0) {
- %>
-							<%=remainingSeconds%>초 <%
-							}
-							%>
+				 if (remainingSeconds > 0) {
+				 %> <%=remainingSeconds%>초 <%
+				 }
+				 %>
 						</span>
 					</p>
 					<p>
